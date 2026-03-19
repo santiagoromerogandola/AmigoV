@@ -1,8 +1,8 @@
 @echo off
 setlocal EnableDelayedExpansion
-title ENTRENAMIENTO SUPREMO - El Chef V
+title ENTRENAMIENTO PRO - El Gran Chef V
 mode con: cols=125 lines=55
-:: Configuración para aceptar acentos y eñes
+:: Esto evita que el programa se cierre por errores de acentos
 chcp 65001 >nul
 
 :bloqueo
@@ -10,30 +10,31 @@ cls
 echo.
 echo  [ SISTEMA PROTEGIDO ]
 echo.
-set /p "combo=Introduzca combinación AFS para entrar: "
+echo Para entrar, escribe la combinacion de 3 letras:
+set /p "combo=> "
 if /i "%combo%"=="AFS" (
     goto inicializar
 ) else (
-    echo Acceso Denegado.
-    timeout /t 2 >nul
+    echo Combinacion incorrecta. Saliendo...
+    timeout /t 3
     exit
 )
 
 :inicializar
 set "CUENTO_FILE=%TEMP%\cuento_v.txt"
-set "PROGRESO_FILE=mi_progreso.txt"
-set "LOG_ESCRITURA=mi_practica.txt"
+set "PROGRESO_FILE=%AppData%\mi_progreso_v.txt"
+set "LOG_ESCRITURA=%AppData%\mi_practica_v.txt"
 
-:: Crear el cuento original de forma segura (Versión Family Friendly)
-(
-echo El Gran Chef V
-echo.
-echo Esta es la historia de mi amigo V, un chico muy divertido que un día decidió que era un chef profesional porque vio un video en internet. Invitó a toda la clase a cenar a su casa diciendo que prepararía una pasta especial con una receta secreta de su abuela. Estaba muy emocionado y hasta se puso un gorro de cocina gigante que le tapaba casi los ojos.
-echo.
-echo Al llegar a su casa, el pobre V estaba en un lío total. Se distrajo hablando por el móvil y la pasta se convirtió en un bloque compacto de cemento. La salsa estaba tan picante que hasta el gato empezó a estornudar. Yo le dije que no pasaba nada, que se notaba el esfuerzo, pero el tío estaba concentrado intentando despegar la comida de la olla con un martillo.
-echo.
-echo Pasaron las horas y V seguía en la cocina haciendo ruidos extraños. Al final, apareció con una sonrisa y nos dijo que la receta secreta era en realidad pedir pizza por teléfono. Mi colega es un personaje, pero siempre nos hace reír. Al final cenamos pizza fría, pero fue la mejor noche de risas en mucho tiempo. Ahora ya no dice que es chef, ahora dice que es crítico de comida a domicilio.
-) > "%CUENTO_FILE%"
+:: Crear el cuento original usando un metodo que no falla con parentesis
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$c = @' " ^
+"El Gran Chef V" ^
+" " ^
+"Esta es la historia de mi amigo V, un chico muy divertido que un día decidió que era un chef profesional porque vio un video en internet. Invitó a toda la clase a cenar a su casa diciendo que prepararía una pasta especial con una receta secreta de su abuela. Estaba muy emocionado y hasta se puso un gorro de cocina gigante que le tapaba casi los ojos." ^
+" " ^
+"Al llegar a su casa, el pobre V estaba en un lío total. Se distrajo hablando por el móvil y la pasta se convirtió en un bloque compacto de cemento. La salsa estaba tan picante que hasta el gato empezó a estornudar. Yo le dije que no pasaba nada, que se notaba el esfuerzo, pero el tío estaba concentrado intentando despegar la comida de la olla con un martillo." ^
+" " ^
+"Pasaron las horas y V seguía en la cocina haciendo ruidos extraños. Al final, apareció con una sonrisa y nos dijo que la receta secreta era en realidad pedir pizza por teléfono. Mi colega es un personaje, pero siempre nos hace reír. Al final cenamos pizza fría, pero fue la mejor noche de risas en mucho tiempo. Ahora ya no dice que es chef, ahora dice que es crítico de comida a domicilio." ^
+"'@; $c | Out-File -FilePath '%CUENTO_FILE%' -Encoding UTF8"
 
 :: Crear progreso inicial si no existe
 if not exist "%PROGRESO_FILE%" (
@@ -43,10 +44,9 @@ if not exist "%PROGRESO_FILE%" (
 :menu
 cls
 echo ========================================================================================================================
-echo                                     SISTEMA DE MEMORIA - El Chef V (Versión PRO)
+echo                                     SISTEMA DE MEMORIA - El Chef V (Version PRO)
 echo ========================================================================================================================
 echo.
-:: Mostrar progreso desbloqueado + pistas aleatorias (15%)
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "$orig = Get-Content -Path '%CUENTO_FILE%' -Raw -Encoding UTF8; " ^
     "$prog = Get-Content -Path '%PROGRESO_FILE%' -Raw -Encoding UTF8; " ^
@@ -61,9 +61,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "Write-Host $res -ForegroundColor Cyan"
 echo.
 echo ========================================================================================================================
-echo  [R] Refrescar Pistas   [E] ESCRIBIR (Guarda con __)   [V] VER TODO    [X] RESET (3696)
+echo  [R] Refrescar Pistas   [E] ESCRIBIR (Guarda con __)   [V] VER TODO (Gratrok)   [X] RESET (3696)
 echo ========================================================================================================================
-set /p opt="Selecciona opción: "
+set /p opt="Selecciona opcion: "
 
 if /i "%opt%"=="R" goto menu
 if /i "%opt%"=="E" goto modo_escritura
@@ -74,7 +74,7 @@ goto menu
 
 :verificar_reset
 echo.
-set /p "rpass=Contraseña MAESTRA para resetear: "
+set /p "rpass=Introduce la clave MAESTRA para resetear: "
 if "%rpass%"=="3696" (
     del "%PROGRESO_FILE%"
     goto inicializar
@@ -84,7 +84,7 @@ if "%rpass%"=="3696" (
 
 :verificar_pass
 echo.
-set /p "vpass=Contraseña para revelar: "
+set /p "vpass=Introduce la clave para revelar: "
 if "%vpass%"=="Gratrok" (
     cls & type "%CUENTO_FILE%" & echo. & pause & goto menu
 ) else (
@@ -94,9 +94,9 @@ if "%vpass%"=="Gratrok" (
 :modo_escritura
 cls
 echo ========================================================================================================================
-echo                                     MODO ESCRITURA - CORRECCIÓN Y DESBLOQUEO
+echo                                     MODO ESCRITURA - CORRECCION Y DESBLOQUEO
 echo ========================================================================================================================
-echo Instrucciones: Escribe frases o palabras sueltas. No importa si olvidas los acentos.
+echo Instrucciones: Escribe palabras o frases. No importa si olvidas los acentos.
 echo [!] PARA FINALIZAR Y GUARDAR: Escribe __ y pulsa ENTER.
 echo.
 echo ------------------------------------------------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command ^
     "} " ^
     "$userRawText = $inputLines -join ' '; " ^
     "$userRawText | Out-File -FilePath '%LOG_ESCRITURA%' -Encoding UTF8; " ^
-    "Write-Host '`n--- CORRECCIÓN (Verde=Bien / Rojo=Mal) ---' -ForegroundColor White; " ^
+    "Write-Host '`n--- CORRECCION (Verde=Bien / Rojo=Mal) ---' -ForegroundColor White; " ^
     "$progArr = (Get-Content -Path '%PROGRESO_FILE%' -Raw -Encoding UTF8).ToCharArray(); " ^
     "$words = $userRawText.Split(' ', [StringSplitOptions]::RemoveEmptyEntries); " ^
     "foreach ($wRaw in $words) { " ^
