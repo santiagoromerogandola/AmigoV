@@ -1,14 +1,14 @@
 <# :
 @echo off
-powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((Get-Content '%~f0' -Raw) -replace '^<# :','')"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ([System.IO.File]::ReadAllText('%~f0', [System.Text.Encoding]::UTF8))"
 exit /b
 #>
 
-# --- CONFIGURACIÓN DEL JUEGO (POWERSHELL) ---
+# --- CONFIGURACION DEL JUEGO ---
 $CUENTO_PATH = "$env:TEMP\cuento_v_final.txt"
 $PROGRESO_PATH = "$env:APPDATA\progreso_v_save.txt"
 
-# 1. Definir el cuento original (Aquí no importa si hay paréntesis o acentos)
+# Definir el cuento (Sin acentos en las variables para evitar errores de codificacion)
 $CuentoOriginal = @'
 El Gran Chef V
 
@@ -19,11 +19,10 @@ Al llegar a su casa, el pobre V estaba en un lío total. Se distrajo hablando po
 Pasaron las horas y V seguía en la cocina haciendo ruidos extraños. Al final, apareció con una sonrisa y nos dijo que la receta secreta era en realidad pedir pizza por teléfono. Mi colega es un personaje, pero siempre nos hace reír. Al final cenamos pizza fría, pero fue la mejor noche de risas en mucho tiempo. Ahora ya no dice que es chef, ahora dice que es crítico de comida a domicilio.
 '@
 
-# Crear el archivo del cuento
 $CuentoOriginal | Out-File -FilePath $CUENTO_PATH -Encoding UTF8 -Force
 
-# --- FUNCIÓN DE NORMALIZACIÓN (PARA IGNORAR ACENTOS) ---
-function Normalizar($s) {
+# Funcion para normalizar texto (Quita acentos y limpia basura)
+function Global:Normalizar($s) {
     if (!$s) { return "" }
     $s = $s.ToLower().Normalize([System.Text.NormalizationForm]::FormD)
     $sb = New-Object System.Text.StringBuilder
@@ -38,32 +37,32 @@ function Normalizar($s) {
 # --- SEGURIDAD INICIAL ---
 Clear-Host
 Write-Host "`n [ SISTEMA PROTEGIDO ]`n" -ForegroundColor Yellow
-$combo = Read-Host "Introduzca combinación AFS para entrar"
-if ($combo -ne "AFS") { Write-Host "Acceso Denegado"; Start-Sleep -s 2; exit }
+$combo = Read-Host "Introduzca combinacion AFS para entrar"
+if ($combo -ne "AFS") { exit }
 
 # --- INICIALIZAR PROGRESO ---
 if (!(Test-Path $PROGRESO_PATH)) {
     $res = ""
     foreach ($c in $CuentoOriginal.ToCharArray()) {
-        if ($c -match '[a-zA-ZÁÉÍÓÚñÑáéíóú]') { $res += "_" } else { $res += $c }
+        if ([System.Char]::IsLetter($c)) { $res += "_" } else { $res += $c }
     }
     $res | Out-File -FilePath $PROGRESO_PATH -Encoding UTF8
 }
 
-# --- MENÚ PRINCIPAL ---
+# --- MENU PRINCIPAL ---
 while ($true) {
     Clear-Host
     Write-Host "===================================================================================================="
-    Write-Host "                          SISTEMA DE ENTRENAMIENTO - El Chef V (Versión Híbrida)"
+    Write-Host "                          SISTEMA DE ENTRENAMIENTO - El Chef V"
     Write-Host "====================================================================================================`n"
 
-    $orig = Get-Content -Path $CUENTO_PATH -Raw -Encoding UTF8
-    $prog = Get-Content -Path $PROGRESO_PATH -Raw -Encoding UTF8
+    $orig = [System.IO.File]::ReadAllText($CUENTO_PATH, [System.Text.Encoding]::UTF8)
+    $prog = [System.IO.File]::ReadAllText($PROGRESO_PATH, [System.Text.Encoding]::UTF8)
     $display = ""
 
     for ($i=0; $i -lt $orig.Length; $i++) {
         $c = $orig[$i]; $p = $prog[$i]
-        if ($c -match '[^a-zA-ZÁÉÍÓÚñÑáéíóú]') { $display += $c }
+        if (![System.Char]::IsLetter($c)) { $display += $c }
         elseif ($p -ne "_") { $display += $c }
         elseif ((Get-Random -Max 100) -lt 15) { $display += $c }
         else { $display += "_" }
@@ -73,18 +72,23 @@ while ($true) {
     Write-Host "`n===================================================================================================="
     Write-Host " [R] Refrescar Pistas   [E] ESCRIBIR (Guarda con __)   [V] VER TODO   [X] RESET   [S] Salir"
     Write-Host "===================================================================================================="
-    $opt = (Read-Host "Selecciona opción").ToUpper()
+    $opt = (Read-Host "Selecciona opcion").ToUpper()
 
     if ($opt -eq "R") { continue }
     if ($opt -eq "S") { exit }
     
     if ($opt -eq "X") {
-        $pass = Read-Host "Introduce clave para RESET (3696)"
-        if ($pass -eq "3696") { Remove-Item $PROGRESO_PATH; Write-Host "Progreso borrado"; Start-Sleep -s 1; return }
+        $pass = Read-Host "Introduce clave MAESTRA"
+        if ($pass -eq "3696") { 
+            if (Test-Path $PROGRESO_PATH) { Remove-Item $PROGRESO_PATH }
+            Write-Host "Reinstalando..." -ForegroundColor Red
+            Start-Sleep -s 1
+            return 
+        }
     }
 
     if ($opt -eq "V") {
-        $pass = Read-Host "Introduce clave para REVELAR (Gratrok)"
+        $pass = Read-Host "Introduce clave para REVELAR"
         if ($pass -eq "Gratrok") { Clear-Host; Write-Host $orig; pause }
     }
 
@@ -100,7 +104,7 @@ while ($true) {
         $userText = $inputLines -join " "
         $userNorm = Normalizar($userText)
         $origNorm = Normalizar($orig)
-        $progArr = (Get-Content -Path $PROGRESO_PATH -Raw -Encoding UTF8).ToCharArray()
+        $progArr = $prog.ToCharArray()
         
         $words = $userNorm.Split(" `t,.!?;:".ToCharArray(), [StringSplitOptions]::RemoveEmptyEntries)
         foreach ($w in $words) {
@@ -112,7 +116,8 @@ while ($true) {
                 }
             }
         }
-        (-join $progArr) | Out-File -FilePath $PROGRESO_PATH -Encoding UTF8
+        $finalText = -join $progArr
+        [System.IO.File]::WriteAllText($PROGRESO_PATH, $finalText, [System.Text.Encoding]::UTF8)
         Write-Host "`n[!] PROGRESO ACTUALIZADO." -ForegroundColor Green
         Start-Sleep -s 1
     }
