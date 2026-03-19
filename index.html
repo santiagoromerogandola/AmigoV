@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SISTEMA V - Mates Aplicadas</title>
+    <style>
+        :root { --primary: #00f2ff; --bg: #0a0a0c; --card: #16161a; --text: #e1e1e6; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
+        .container { max-width: 600px; padding: 40px; background: var(--card); border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { color: var(--primary); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 5px; }
+        p { color: #888; margin-bottom: 30px; font-size: 0.9rem; }
+        .btn-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        
+        /* ESTILO DEL BOTÓN DE DESCARGA */
+        .btn-download { 
+            background: var(--primary); 
+            color: #000; 
+            padding: 20px 40px; 
+            font-size: 1.2rem; 
+            font-weight: bold; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            width: 100%; 
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3); 
+        }
+        .btn-download:hover { background: #fff; transform: scale(1.02); }
+        
+        .info { margin-top: 30px; font-size: 0.8rem; color: #555; text-align: left; background: #000; padding: 15px; border-radius: 10px; border: 1px solid #222; }
+        .warning { color: #ffcc00; margin-top: 10px; font-size: 0.75rem; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>MATES APLICADAS</h1>
+        <p>Sistema de Entrenamiento de Memoria e Inteligencia</p>
+        
+        <div class="btn-group">
+            <!-- AQUÍ ESTÁ EL ACCESO AL ARCHIVO .BAT -->
+            <a href="matesaplicadas.bat" download="matesaplicadas.bat" class="btn-download">
+                📥 DESCARGAR JUEGO (.BAT)
+            </a>
+        </div>
+
+        <div class="warning">
+            * Si el navegador bloquea la descarga, elige "Conservar archivo".
+        </div>
+
+        <div class="info">
+            <b>Instrucciones de acceso:</b><br>
+            1. Descarga el archivo y ejecútalo en Windows.<br>
+            2. Combinación inicial: <b>AFS</b>.<br>
+            3. Para guardar en modo escritura: Escribe <b>__</b> al final.<br>
+            4. Revelar respuesta: <b>Gratrok</b>.
+        </div>
+    </div>
+
+</body>
+</html>
