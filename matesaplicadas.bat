@@ -4,10 +4,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ([System.IO.File]::R
 exit /b
 #>
 
-# --- CONFIGURACION ---
+# --- CONFIGURACION DEL SISTEMA ---
+$H = $Host.UI.RawUI
+$size = $H.BufferSize
+$size.Width = 150
+$H.BufferSize = $size
+$size = $H.WindowSize
+$size.Width = 150
+$H.WindowSize = $size
+
 $CUENTO_PATH = "$env:TEMP\cuento_v_final.txt"
 $PROGRESO_PATH = "$env:APPDATA\progreso_v_save.txt"
-$FOTO_GANADOR = "ganador.png" # Cambia a .jpg si tu foto tiene esa extension
+$FOTO_GANADOR = "baixa.png" 
 
 $CuentoOriginal = @'
 El Gran Chef V
@@ -36,7 +44,7 @@ function Global:Normalizar($s) {
 # --- PANTALLA DE VICTORIA ---
 function Show-Victory {
     Clear-Host
-    # 1. Mostrar el Arte ASCII que pasaste
+    # 1. Mostrar el Arte ASCII 
     $Art = @'
           *%%#+++++++++++++++%%*####**+++***+++++++*************##*#@@@@@@@@@@@@@#==%@@@****+*@@@@@          
           %%##++++++++++==++=+#++%#*+**++*%*+++++*****************###@@@@@@@@@@#===#@@@*****@@@@@@@          
@@ -142,7 +150,7 @@ function Show-Victory {
     # 2. Mensaje de victoria
     Write-Host "`n          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" -F White
     Write-Host "          !!                                                       !!" -F White
-    Write-Host "          !!      ¡VICTORIA! HAS DESBLOQUEADO TODA LA HISTORIA    !!" -F Green
+    Write-Host "          !!      ¡VICTORIA! ENTRENAMIENTO COMPLETADO              !!" -F Green
     Write-Host "          !!                                                       !!" -F White
     Write-Host "          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" -F White
     
@@ -152,7 +160,7 @@ function Show-Victory {
 
     # 4. Abrir la foto automáticamente
     if (Test-Path $FOTO_GANADOR) {
-        Write-Host "`n              ¡Abriendo la foto del campeón!" -F Green
+        Write-Host "`n              ¡Abriendo retrato del campeón!" -F Green
         Start-Process $FOTO_GANADOR
     } else {
         Write-Host "`n              [!] No se encontró el archivo $FOTO_GANADOR" -F Red
