@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SISTEMA V - Mates Aplicadas</title>
+    <title>SISTEMA V - Pack de Entrenamiento</title>
     <style>
         :root { --primary: #00f2ff; --bg: #0a0a0c; --card: #16161a; --text: #e1e1e6; }
         body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; text-align: center; }
@@ -12,51 +12,59 @@
         p { color: #888; margin-bottom: 30px; font-size: 0.9rem; }
         .btn-group { display: flex; flex-direction: column; gap: 15px; align-items: center; }
         
-        /* ESTILO DEL BOTÓN DE DESCARGA */
-        .btn-download { 
-            background: var(--primary); 
-            color: #000; 
-            padding: 20px 40px; 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            border: none; 
-            border-radius: 50px; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            width: 100%; 
+        .btn { 
             text-decoration: none;
             display: inline-block;
+            width: 80%;
+            padding: 15px 30px; 
+            font-size: 1rem; 
+            font-weight: bold; 
+            border-radius: 50px; 
+            transition: 0.3s; 
+            cursor: pointer;
+        }
+
+        .btn-main {
+            background: var(--primary); 
+            color: #000; 
             box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3); 
         }
-        .btn-download:hover { background: #fff; transform: scale(1.02); }
+
+        .btn-sub {
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+        }
+
+        .btn:hover { background: #fff; color: #000; transform: scale(1.02); }
         
         .info { margin-top: 30px; font-size: 0.8rem; color: #555; text-align: left; background: #000; padding: 15px; border-radius: 10px; border: 1px solid #222; }
-        .warning { color: #ffcc00; margin-top: 10px; font-size: 0.75rem; }
+        .important { color: #ff3e3e; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>MATES APLICADAS</h1>
-        <p>Sistema de Entrenamiento de Memoria e Inteligencia</p>
+        <h1>SISTEMA V: PACK COMPLETO</h1>
+        <p>Descarga ambos archivos para que el sistema funcione correctamente.</p>
         
         <div class="btn-group">
-            <!-- AQUÍ ESTÁ EL ACCESO AL ARCHIVO .BAT -->
-            <a href="matesaplicadas.bat" download="matesaplicadas.bat" class="btn-download">
-                📥 DESCARGAR JUEGO (.BAT)
+            <!-- BOTÓN 1: EL SCRIPT -->
+            <a href="matesaplicadas.bat" download="matesaplicadas.bat" class="btn btn-main">
+                1. DESCARGAR MOTOR DEL JUEGO (.BAT)
+            </a>
+
+            <!-- BOTÓN 2: LA FOTO -->
+            <a href="baixa.png" download="baixa.png" class="btn btn-sub">
+                2. DESCARGAR ARCHIVO DE IMAGEN (.PNG)
             </a>
         </div>
 
-        <div class="warning">
-            * Si el navegador bloquea la descarga, elige "Conservar archivo".
-        </div>
-
         <div class="info">
-            <b>Instrucciones de acceso:</b><br>
-            1. Descarga el archivo y ejecútalo en Windows.<br>
-            2. Combinación inicial: <b>AFS</b>.<br>
-            3. Para guardar en modo escritura: Escribe <b>__</b> al final.<br>
-            4. Revelar respuesta: <b>Gratrok</b>.
+            <span class="important">¡IMPORTANTE!</span><br>
+            Para que la sorpresa final funcione, debes guardar la foto <b>baixa.png</b> en la <span class="important">MISMA CARPETA</span> donde guardes el juego.<br><br>
+            <b>Acceso Inicial:</b> AFS<br>
+            <b>Guardar escritura:</b> Escribir __ al final.
         </div>
     </div>
 
